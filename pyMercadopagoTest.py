@@ -5,6 +5,7 @@ Created on Sep 11, 2012
 '''
 import unittest
 from pymercadopago import Mercadopago , NoAccessTokenError, UndefinedResponseError
+from django.template.defaultfilters import length
 
 
 
@@ -41,7 +42,7 @@ class PyMercadopagoTest(unittest.TestCase):
             }
         }
         self.data = data
-        self.client_id = 3805
+        self.client_id = 3803
         self.client_secret = 'PwZ6B94AlYdOYyJ4xWr2Rl87tVPPeIlw'
 
 
@@ -54,33 +55,11 @@ class PyMercadopagoTest(unittest.TestCase):
         except UndefinedResponseError :
             self.fail("Bad response")
 
+        self.assertTrue(len(mp.access_token)==61, "invalid token size")
+
     def tearDown(self):
         pass
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
-    
-    
-    """
-# Comienzo de la implementacion
-"""
-"""
-
-if __name__ == '__main__':
-
-
-    clientID = 3803
-    clientSecret = 'PwZ6B94AlYdOYyJ4xWr2Rl87tVPPeIlw'
-    mp = Mercadopago(clientID, clientSecret)
-    access_token = mp.get_access_token()
-
-    if access_token:
-        preference = mp.create_preference(data, access_token)
-        if preference:
-            print "Preferencia creada con exito: " + preference["init_point"]
-        else:
-            print "Error creando la preferencia"
-    else:
-        print "Error al obtener el access token"
-"""
