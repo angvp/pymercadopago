@@ -11,6 +11,14 @@ import json
 Some settings
 """
 
+class NoAccessTokenError(Exception):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
 
 class Mercadopago:
 
@@ -22,6 +30,9 @@ class Mercadopago:
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = self.get_access_token()
+
+        if !self.access_token:
+            raise NoAccessTokenError('gíl')
 
 
     def post_json(self, data, rcode, url):
