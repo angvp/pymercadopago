@@ -21,6 +21,7 @@ class Mercadopago:
         self.url_status_preference = "%s/checkout/preferences/ping" % self.url_base
         self.client_id = client_id
         self.client_secret = client_secret
+        self.access_token = self.get_access_token()
 
 
     def post_json(self, data, rcode, url):
@@ -57,7 +58,7 @@ class Mercadopago:
         response = self.post_data(data, 200, url)
         if 'error' not in response:
             return response['access_token']
-        return False
+        Return None
 
 
     def check_status_preference():
