@@ -47,7 +47,7 @@ class PyMercadopagoTest(unittest.TestCase):
 
 
 
-    def testAccessToken(self):
+    def test_AccessToken(self):
         try:
             mp = Mercadopago(self.client_id,self.client_secret)
         except NoAccessTokenError :
@@ -61,5 +61,5 @@ class PyMercadopagoTest(unittest.TestCase):
         pass
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
+    import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

@@ -46,6 +46,9 @@ class Mercadopago:
         self.pending_url = ''
         self.succes_url = ''
         self.payments = []
+        if self.client_id == '' or self.client_secret == '':
+            raise NoAccessTokenError()
+        
         self.access_token = self.get_access_token()
 
         if not self.access_token:
