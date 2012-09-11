@@ -5,7 +5,7 @@ Created on Sep 11, 2012
 '''
 import unittest
 from pymercadopago import Mercadopago , NoAccessTokenError, UndefinedResponseError
-from django.template.defaultfilters import length
+
 
 
 
@@ -44,18 +44,31 @@ class PyMercadopagoTest(unittest.TestCase):
         self.data = data
         self.client_id = 3803
         self.client_secret = 'PwZ6B94AlYdOYyJ4xWr2Rl87tVPPeIlw'
+        self.mp = None
 
 
 
     def test_AccessToken(self):
         try:
-            mp = Mercadopago(self.client_id,self.client_secret)
+            self.mp = Mercadopago(self.client_id,self.client_secret)
         except NoAccessTokenError :
             self.fail("No Access Token")
         except UndefinedResponseError :
-            self.fail("Bad response")
+            self.fail("Bad responsenn")
 
-        self.assertTrue(len(mp.access_token)==61, "invalid token size")
+        self.assertTrue(len(self.mp.access_token)==61, "invalid token size")
+    
+    def test_CreateItem(self):
+        try:
+            self.mp = Mercadopago(self.client_id,self.client_secret)
+            item = self.mp.get_or_create_item(self.data)
+        except NoAccessTokenError :
+            self.fail("No Access Token")
+        except UndefinedResponseError :
+            self.fail("Bad responsexx")
+        
+        
+        
 
     def tearDown(self):
         pass

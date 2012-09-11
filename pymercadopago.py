@@ -92,8 +92,8 @@ class Mercadopago:
             return resp_dict['access_token']
         return False
 
-    def get_or_create_item(self, data, access_token):
-        url = "%s%s" % (self.url_preference, access_token)
+    def get_or_create_item(self, data):
+        url = "%s%s" % (self.url_preference, self.access_token)
         rcode = 201
         preference = self.post_data(data, rcode, url, 'json')
         if preference:
