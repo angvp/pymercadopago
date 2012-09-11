@@ -4,7 +4,7 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-from pymercadopago import Mercadopago , NoAccessTokenError
+from pymercadopago import Mercadopago , NoAccessTokenError, UndefinedResponseError
 
 
 
@@ -41,7 +41,7 @@ class PyMercadopagoTest(unittest.TestCase):
             }
         }
         self.data = data
-        self.client_id = 3803
+        self.client_id = 3805
         self.client_secret = 'PwZ6B94AlYdOYyJ4xWr2Rl87tVPPeIlw'
 
 
@@ -51,6 +51,8 @@ class PyMercadopagoTest(unittest.TestCase):
             mp = Mercadopago(self.client_id,self.client_secret)
         except NoAccessTokenError :
             self.fail("No Access Token")
+        except UndefinedResponseError :
+            self.fail("Bad response")
 
     def tearDown(self):
         pass
