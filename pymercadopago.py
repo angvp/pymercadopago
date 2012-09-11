@@ -31,10 +31,13 @@ class Mercadopago:
         self.client_secret = client_secret
         self.access_token = self.get_access_token()
 
-        if !self.access_token:
-            raise NoAccessTokenError('gíl')
+        if not self.access_token:
+            raise NoAccessTokenError('gil')
 
-
+    def __call__(self):
+        print ":)"
+        
+        
     def post_json(self, data, rcode, url):
         return self.post_data_type(data, rcode, url, 'json')
 
@@ -69,10 +72,10 @@ class Mercadopago:
         response = self.post_data(data, 200, url)
         if 'error' not in response:
             return response['access_token']
-        Return None
+        return None
 
 
-    def check_status_preference():
+    def check_status_preference(self):
         url = self.url_status_preference
         req = urllib2.Request(url)
         req.add_header('Accept', 'application/json')
@@ -93,4 +96,4 @@ class Mercadopago:
         preference = self.create_preference(data, access_token)
         return preference['init_point']
 
-
+        

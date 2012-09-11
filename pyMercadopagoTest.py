@@ -49,10 +49,8 @@ class PyMercadopagoTest(unittest.TestCase):
     def testAccessToken(self):
         try:
             mp = Mercadopago(self.client_id,self.client_secret)
-        except 
-        self.assertNotEqual(mp, None, "Error ")
-
-        
+        except NoAccessTokenError :
+            self.fail("No Access Token")
 
     def tearDown(self):
         pass
