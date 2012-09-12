@@ -35,6 +35,8 @@ class UndefinedResponseError(Exception):
 
 
 class Mercadopago:
+    
+    
 
     def __init__(self, client_id, client_secret):
         self.url_base = 'https://api.mercadolibre.com'
@@ -94,8 +96,8 @@ class Mercadopago:
 
     def get_or_create_item(self, data):
         url = "%s%s" % (self.url_preference, self.access_token)
-        rcode = 201
-        preference = self.post_data(data, rcode, url, 'json')
+        expectedOkStatus = 201
+        preference = self.post_data(data, expectedOkStatus, url, 'json')
         if preference:
             return json.loads(preference)
         return False

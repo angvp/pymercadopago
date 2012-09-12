@@ -5,12 +5,10 @@ Created on Sep 11, 2012
 '''
 import unittest
 from pymercadopago import Mercadopago , NoAccessTokenError, UndefinedResponseError
-
-
-
+from urlparse import urlparse
 
 class PyMercadopagoTest(unittest.TestCase):
-
+    
 
     def setUp(self):
             
@@ -44,31 +42,40 @@ class PyMercadopagoTest(unittest.TestCase):
         self.data = data
         self.client_id = 12823
         self.client_secret = '4zDgtKDKzC2krZw7FplnYVhTWbWkEMM0'
-        self.mp = None
+        self.mercadopagoHandler = None
 
 
 
     def test_AccessToken(self):
         try:
-            self.mp = Mercadopago(self.client_id,self.client_secret)
+            self.mercadopagoHandler = Mercadopago(self.client_id,self.client_secret)
         except NoAccessTokenError :
             self.fail("No Access Token")
         except UndefinedResponseError :
             self.fail("Bad response creating token")
 
-        self.assertTrue(len(self.mp.access_token)==63, "Invalid token size!!")
+        self.assertTrue(len(self.mercadopagoHandler.access_token)==63, "Invalid token size!!")
     
     def test_CreateItem(self):
         try:
-            self.mp = Mercadopago(self.client_id,self.client_secret)
-            item = self.mp.get_or_create_item(self.data)
-            print item
+            self.mercadopagoHandler = Mercadopago(self.client_id,self.client_secret)
+            item = self.mercadopagoHandler.get_or_create_item(self.data)
+            
+            #it should verify init_point property contains a valid url
+            validator = urlparse( item['init_point']  )
+            print validator.scheme
+            print validator.netloc
+            print validator.path
+            print validator.query
+            if validator.scheme == '' or validator.netloc == '' or validator.path == '' or validator.query == '':
+                self.fail("Invalid init point generated!!") 
+            
         except NoAccessTokenError :
             self.fail("No Access Token")
         except UndefinedResponseError :
             self.fail("Bad response creating item")
         
-        
+  
         
 
     def tearDown(self):
