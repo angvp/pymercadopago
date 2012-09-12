@@ -17,6 +17,7 @@ import requests
 import json
 
 
+
 class NoAccessTokenError(Exception):
 
     def __init__(self, value):
@@ -35,7 +36,6 @@ class UndefinedResponseError(Exception):
 
 
 class Mercadopago:
-    
     
 
     def __init__(self, client_id, client_secret):
@@ -58,13 +58,18 @@ class Mercadopago:
 
     def add_pending(self, url):
         self.pending_url = url
-
     def add_succesful(self, url):
         self.successful = url
-
     def add_payment(self, payment):
         pass
-
+    def add_payer(self, payer):
+        pass
+    def add_metadata(self,metadata):
+        pass
+    def add_item(self,item):
+        pass
+    def toJson(self):
+        pass
     def post_data(self, data, rcode, url, type):
         if type == 'json':
             headers = {'Content-type': 'application/json',
@@ -101,3 +106,35 @@ class Mercadopago:
         if preference:
             return json.loads(preference)
         return False
+    
+    def __unicode__(self):
+        return 'json: '
+    def __str__(self):
+        return 'json: '
+    
+class Order:
+    items = None
+    payer = None
+    external_reference = ''
+    suscription_plan_id = ''
+    id = ''
+    collector_id = ''
+    init_point = ''
+    expires = ''
+    expiration_date_to = ''
+    expiration_dato_from = ''
+    back_urls = None
+    
+class Item:
+    id = ''
+    title = ''
+    descripcion = ''
+    quantity = 0
+    unit_price = 0
+    currency = ''
+    picture_url = ''
+    
+class Payer:
+    name = ''
+    surname = '' 
+    email = ''
