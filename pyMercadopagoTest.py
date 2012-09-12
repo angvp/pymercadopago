@@ -42,8 +42,8 @@ class PyMercadopagoTest(unittest.TestCase):
             }
         }
         self.data = data
-        self.client_id = 3803
-        self.client_secret = 'PwZ6B94AlYdOYyJ4xWr2Rl87tVPPeIlw'
+        self.client_id = 12823
+        self.client_secret = '4zDgtKDKzC2krZw7FplnYVhTWbWkEMM0'
         self.mp = None
 
 
@@ -54,18 +54,19 @@ class PyMercadopagoTest(unittest.TestCase):
         except NoAccessTokenError :
             self.fail("No Access Token")
         except UndefinedResponseError :
-            self.fail("Bad responsenn")
+            self.fail("Bad response creating token")
 
-        self.assertTrue(len(self.mp.access_token)==61, "invalid token size")
+        self.assertTrue(len(self.mp.access_token)==63, "Invalid token size!!")
     
     def test_CreateItem(self):
         try:
             self.mp = Mercadopago(self.client_id,self.client_secret)
             item = self.mp.get_or_create_item(self.data)
+            print item
         except NoAccessTokenError :
             self.fail("No Access Token")
         except UndefinedResponseError :
-            self.fail("Bad responsexx")
+            self.fail("Bad response creating item")
         
         
         
