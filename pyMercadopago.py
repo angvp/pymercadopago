@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """
-Mercadopago Class:
+PyMercadopagoHandler Class:
 ==================
 
 This class is intended to be used as simplifier of handling several http
@@ -35,7 +35,7 @@ class UndefinedResponseError(Exception):
         return repr(self.value)
 
 
-class Mercadopago:
+class PyMercadopagoHandler:
     
     orders = list()
     notifications = list() 
@@ -91,7 +91,11 @@ class Mercadopago:
         if preference:
             return json.loads(preference)
         return False
-    
+
+    def pushOrders(self,orders):
+            for order in orders:
+                self.get_or_create(order.toJson())
+        
     def __unicode__(self):
         return 'json: '
     def __str__(self):
@@ -117,6 +121,8 @@ class Order:
         self.external_reference = externalReference 
         self.collector_id = collectorId
         self.id = internalId
+        self.items = list()
+        self.payer = Payer()
         
     def addItem(self,item):
         if self.items == None:

@@ -4,7 +4,7 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-from pymercadopago import Mercadopago , NoAccessTokenError, UndefinedResponseError,\
+from pymercadopago import PyMercadopagoHandler , NoAccessTokenError, UndefinedResponseError,\
     Order, Item, Payer
 from urlparse import urlparse
 
@@ -49,7 +49,7 @@ class PyMercadopagoTest(unittest.TestCase):
 
     def test_AccessToken(self):
         try:
-            self.mercadopagoHandler = Mercadopago(self.client_id,self.client_secret)
+            self.mercadopagoHandler = PyMercadopagoHandler(self.client_id,self.client_secret)
         except NoAccessTokenError :
             self.fail("No Access Token")
         except UndefinedResponseError :
@@ -59,7 +59,7 @@ class PyMercadopagoTest(unittest.TestCase):
     
     def test_CreateItem(self):
         try:
-            self.mercadopagoHandler = Mercadopago(self.client_id,self.client_secret)
+            self.mercadopagoHandler = PyMercadopagoHandler(self.client_id,self.client_secret)
             item = self.mercadopagoHandler.get_or_create_item(self.data)
             
             #it should verify init_point property contains a valid url
@@ -71,7 +71,7 @@ class PyMercadopagoTest(unittest.TestCase):
             if validator.scheme == '' or validator.netloc == '' or validator.path == '' or validator.query == '':
                 self.fail("Invalid init point generated!!") 
             
-        except NoAccessTokenError :
+        except NoAccessTokenError:
             self.fail("No Access Token")
         except UndefinedResponseError :
             self.fail("Bad response creating item")
@@ -80,9 +80,9 @@ class PyMercadopagoTest(unittest.TestCase):
     def testOrderCreation(self):
         
         #simple User case
-        mpHandler = Mercadopago(self.client_id,self.client_secret)
+        mpHandler = PyMercadopagoHandler(self.client_id,self.client_secret)
         
-        order = Order();
+        order = Order(externalReference = "OP1234", internalId = '1ZQM2' , collectorId = '5879');
         item = Item() #TODO should be a factory && populate properties in the constructor
         order.addItem(item)
         
@@ -95,27 +95,21 @@ class PyMercadopagoTest(unittest.TestCase):
     
     def testListOrderCreation(self):
         #batchMode
-        mpHandler = Mercadopago(self.client_id,self.client_secret)
+        mpHandler = PyMercadopagoHandler(self.client_id,self.client_secret)
         orders = list()
         
-        order = Order();
+        order = Order(externalReference = "OP1234", internalId = '1ZQM2' , collectorId = '5879');
         item = Item() #TODO should be a factory && populate properties in the constructor
         order.addItem(item)
         
         payer = Payer() #TODO factory for this
         order.addPayer(payer)
-        
          
         orders.append(order)
-        orders.append(order.clone)
-        
-        
-        
-        
-        mpHandler.pushOrder(order)
+        mpHandler.pushOrder(orders)
 
     def testOrderMethods(self):
-        order = Order()
+        order = Order(externalReference = "OP1234", internalId = '1ZQM2' , collectorId = '5879')
         order.toJson() 
         #TODO
         #orderClone = order.clone()
