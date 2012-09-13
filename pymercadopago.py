@@ -47,9 +47,6 @@ class Mercadopago:
         self.url_status_preference = "%s/checkout/preferences/ping" % self.url_base
         self.client_id = client_id
         self.client_secret = client_secret
-        self.pending_url = ''
-        self.succes_url = ''
-        self.payments = []
         if self.client_id == '' or self.client_secret == '':
             raise NoAccessTokenError()
         
@@ -58,21 +55,6 @@ class Mercadopago:
         if not self.access_token:
             raise NoAccessTokenError('gil')
         
-    
-    def add_pending(self, url):
-        self.pending_url = url
-    def add_succesful(self, url):
-        self.successful = url
-    def add_payment(self, payment):
-        pass
-    def add_payer(self, payer):
-        pass
-    def add_metadata(self,metadata):
-        pass
-    def add_item(self,item):
-        pass
-    def toJson(self):
-        pass
     def post_data(self, data, rcode, url, type):
         if type == 'json':
             headers = {'Content-type': 'application/json',
@@ -116,6 +98,7 @@ class Mercadopago:
         return 'json: '
     
 class Order:
+    
     items = None
     payer = None
     external_reference = ''
@@ -127,6 +110,33 @@ class Order:
     expiration_date_to = ''
     expiration_dato_from = ''
     back_urls = None
+    
+    def __init__(self,externalReference,internalId,collectorId):
+        #At constructor should be all required fields.
+        
+        self.external_reference = externalReference 
+        self.collector_id = collectorId
+        self.id = internalId
+        
+    def addItem(self,item):
+        if self.items == None:
+            self.items = list()
+        
+        self.items.append(item)
+    
+    def addPayer(self,payer):
+        self.payer = payer
+    
+    def addSuccessUrl(self,url):
+        if self.back_urls == None:
+            self.back_urls = Back_Urls
+        self.back_ulrs.success = url 
+    
+    def addPendingUrl(self,url):
+        if self.back_urls == None:
+            self.back_urls = Back_Urls()
+        self.back_ulrs.pending = url
+    
     
 class Item:
     id = ''
@@ -141,3 +151,7 @@ class Payer:
     name = ''
     surname = '' 
     email = ''
+
+class Back_Urls:
+    pending = ''
+    success = ''

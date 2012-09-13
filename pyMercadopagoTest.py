@@ -91,14 +91,32 @@ class PyMercadopagoTest(unittest.TestCase):
         
         mpHandler.pushOrder(order)
         
-        pass
+        
     
     def testListOrderCreation(self):
-        pass
-    
+        #batchMode
+        mpHandler = Mercadopago(self.client_id,self.client_secret)
+        orders = list()
+        
+        order = Order();
+        item = Item() #TODO should be a factory && populate properties in the constructor
+        order.addItem(item)
+        
+        payer = Payer() #TODO factory for this
+        order.addPayer(payer)
+        
+         
+        orders.append(order)
+        orders.append(order.clone)
+        
+        mpHandler.pushOrder(order)
+
     def testOrderMethods(self):
         order = Order()
-        order.toJson()    
+        order.toJson() 
+        
+        orderClone = order.clone()
+        self.assertFalse(orderClone != None, "Object hasnt been Cloned!!!")   
             
 
     def tearDown(self):
