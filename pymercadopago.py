@@ -136,7 +136,9 @@ class Order:
         if self.back_urls == None:
             self.back_urls = Back_Urls()
         self.back_ulrs.pending = url
-    
+
+    def toJson(self):
+        return json.dump(self)
     
 class Item:
     id = ''
