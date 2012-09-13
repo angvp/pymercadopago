@@ -17,7 +17,6 @@ import requests
 import json
 
 
-
 class NoAccessTokenError(Exception):
 
     def __init__(self, value):
@@ -25,6 +24,7 @@ class NoAccessTokenError(Exception):
 
     def __str__(self):
         return repr(self.value)
+
 
 class UndefinedResponseError(Exception):
 
@@ -36,9 +36,11 @@ class UndefinedResponseError(Exception):
 
 
 class PyMercadopagoHandler:
-    
+
     orders = list()
-    notifications = list() 
+    notifications = list()
+    tokenGenerationStatusExpected = 200
+    createItemStatusExpected = 201
 
     def __init__(self, client_id, client_secret):
         self.url_base = 'https://api.mercadolibre.com'
@@ -49,14 +51,14 @@ class PyMercadopagoHandler:
         self.client_secret = client_secret
         if self.client_id == '' or self.client_secret == '':
             raise NoAccessTokenError()
-        
+
         self.access_token = self.get_access_token()
 
         if not self.access_token:
             raise NoAccessTokenError('gil')
-        
-    def post_data(self, data, rcode, url, type):
-        if type == 'json':
+
+    def post_data(self, data, rcode, url, utype):
+        if utype == 'json':
             headers = {'Content-type': 'application/json',
                     'Accept': 'application/json'}
             data = json.dumps(data)
@@ -68,7 +70,7 @@ class PyMercadopagoHandler:
             return r.content
         else:
             raise UndefinedResponseError(r)
-        
+
         #Raisear error post data
 
     def get_access_token(self):
@@ -78,7 +80,7 @@ class PyMercadopagoHandler:
                 'client_secret': self.client_secret
                 }
         url = self.url_oauth_token
-        response = self.post_data(data, 200, url, 'text')
+        response = self.post_data(data, self.tokenGenerationStatusExpected, url, 'text')
         if response:
             resp_dict = json.loads(response)
             return resp_dict['access_token']
@@ -86,23 +88,24 @@ class PyMercadopagoHandler:
 
     def get_or_create_item(self, data):
         url = "%s%s" % (self.url_preference, self.access_token)
-        expectedOkStatus = 201
-        preference = self.post_data(data, expectedOkStatus, url, 'json')
+
+        preference = self.post_data(data, self.createItemStatusExpected, url, 'json')
         if preference:
             return json.loads(preference)
         return False
 
-    def pushOrders(self,orders):
-            for order in orders:
-                self.get_or_create(order.toJson())
-        
+    def pushOrders(self, orders):
+        for order in orders:
+            print self.get_or_create_item(order.toJson())
+
     def __unicode__(self):
         return 'json: '
+
     def __str__(self):
         return 'json: '
-    
+
+
 class Order:
-    
     items = None
     payer = None
     external_reference = ''
@@ -114,55 +117,100 @@ class Order:
     expiration_date_to = ''
     expiration_dato_from = ''
     back_urls = None
-    
-    def __init__(self,externalReference,internalId,collectorId):
-        #At constructor should be all required fields.
-        
-        self.external_reference = externalReference 
+
+    def __init__(self, externalReference, internalId, collectorId):
+
+        #At constructor should be all required fields
+        self.external_reference = externalReference
         self.collector_id = collectorId
         self.id = internalId
         self.items = list()
         self.payer = Payer()
-        
-    def addItem(self,item):
+
+    def addItem(self, item):
         if self.items == None:
             self.items = list()
-        
+
         self.items.append(item)
-    
-    def addPayer(self,payer):
+
+    def addPayer(self, payer):
         self.payer = payer
-    
-    def addSuccessUrl(self,url):
+
+    def addSuccessUrl(self, url):
         if self.back_urls == None:
             self.back_urls = Back_Urls
-        self.back_ulrs.success = url 
-    
-    def addPendingUrl(self,url):
+        self.back_ulrs.success = url
+
+    def addPendingUrl(self, url):
         if self.back_urls == None:
             self.back_urls = Back_Urls()
         self.back_ulrs.pending = url
 
     def toJson(self):
-        return json.dump(self)
-    
+        print self
+        return json.dumps(str(self))
+
+    def __repr__(self):
+        return_value = "{ \"external_reference\":\"" + \
+            self.external_reference + "\","
+
+        return_value = return_value + "\"items\":[{"
+
+        for item in self.items:
+            if item.id != '':
+                return_value = return_value + "\"id\":"
+                return_value = return_value + "\"" + item.id + "\","
+
+            return_value = return_value + "\"title\":"
+            return_value = return_value + "\"" + item.title + "\""
+
+            if item.description != '':
+                return_value = return_value + ",\"description\":"
+                return_value = return_value + "\"" + item.description + "\""
+
+            return_value = return_value + ",\"quantity\":"
+            return_value = return_value + str(item.quantity)
+
+            return_value = return_value + ",\"unit_price\":"
+            return_value = return_value + str(item.unit_price)
+
+            return_value = return_value + ",\"currency_id\":"
+            return_value = return_value + "\"" + str(item.currency_id) + "\""
+
+            if item.picture_url != '':
+                return_value = return_value + ",\"picture_url\":"
+                return_value = return_value + "\"" + item.picture_url + "\""
+
+            return_value = return_value + "}]}"
+
+        return return_value
+
+
 class Item:
-    
+
     id = ''
     title = ''
-    descripcion = ''
+    description = ''
     quantity = 0
     unit_price = 0
-    currency = ''
+    currency_id = ''
     picture_url = ''
-    
-    def __init__(self, title):
-        
+
+    def __init__(self, title, quantity, unitPrice, currencyId):
+        self.title = title
+        self.quantity = quantity
+        self.unit_price = unitPrice
+        self.currency_id = currencyId
+
+
 class Payer:
+
     name = ''
-    surname = '' 
+    surname = ''
     email = ''
 
+
 class Back_Urls:
+
     pending = ''
     success = ''

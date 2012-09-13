@@ -4,7 +4,7 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-from pymercadopago import PyMercadopagoHandler , NoAccessTokenError, UndefinedResponseError,\
+from pyMercadopago import PyMercadopagoHandler , NoAccessTokenError, UndefinedResponseError,\
     Order, Item, Payer
 from urlparse import urlparse
 
@@ -83,7 +83,7 @@ class PyMercadopagoTest(unittest.TestCase):
         mpHandler = PyMercadopagoHandler(self.client_id,self.client_secret)
         
         order = Order(externalReference = "OP1234", internalId = '1ZQM2' , collectorId = '5879');
-        item = Item() #TODO should be a factory && populate properties in the constructor
+        item = Item(title = 'Cuadro con Mother', quantity = 100,unitPrice = 520 ,currencyId = 'ARS') 
         order.addItem(item)
         
         payer = Payer() #TODO factory for this
@@ -99,18 +99,18 @@ class PyMercadopagoTest(unittest.TestCase):
         orders = list()
         
         order = Order(externalReference = "OP1234", internalId = '1ZQM2' , collectorId = '5879');
-        item = Item() #TODO should be a factory && populate properties in the constructor
+        item = Item(title = 'Cuadro con Mother', quantity = 100,unitPrice = 520 ,currencyId = 'ARS') 
         order.addItem(item)
         
         payer = Payer() #TODO factory for this
         order.addPayer(payer)
          
         orders.append(order)
-        mpHandler.pushOrder(orders)
+        mpHandler.pushOrders(orders)
 
     def testOrderMethods(self):
         order = Order(externalReference = "OP1234", internalId = '1ZQM2' , collectorId = '5879')
-        order.toJson() 
+        #order.toJson() 
         #TODO
         #orderClone = order.clone()
         #self.assertFalse(orderClone != None, "Object hasnt been Cloned!!!")   
