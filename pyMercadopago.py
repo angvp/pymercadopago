@@ -147,6 +147,7 @@ class Order:
         return json.dump(self)
     
 class Item:
+    
     id = ''
     title = ''
     descripcion = ''
@@ -155,6 +156,8 @@ class Item:
     currency = ''
     picture_url = ''
     
+    def __init__(self, title):
+        
 class Payer:
     name = ''
     surname = '' 
