@@ -4,9 +4,9 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-from pymercadopago import Mercadopago , NoAccessTokenError, UndefinedResponseError
+from pymercadopago import Mercadopago , NoAccessTokenError, UndefinedResponseError,\
+    Order, Item, Payer
 from urlparse import urlparse
-from mock import Mock
 
 class PyMercadopagoTest(unittest.TestCase):
     
@@ -77,7 +77,29 @@ class PyMercadopagoTest(unittest.TestCase):
             self.fail("Bad response creating item")
         
 
+    def testOrderCreation(self):
         
+        #simple User case
+        mpHandler = Mercadopago(self.client_id,self.client_secret)
+        
+        order = Order();
+        item = Item() #TODO should be a factory && populate properties in the constructor
+        order.addItem(item)
+        
+        payer = Payer() #TODO factory for this
+        order.addPayer(payer)
+        
+        mpHandler.pushOrder(order)
+        
+        pass
+    
+    def testListOrderCreation(self):
+        pass
+    
+    def testOrderMethods(self):
+        order = Order()
+        order.toJson()    
+            
 
     def tearDown(self):
         pass

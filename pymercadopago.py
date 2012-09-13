@@ -37,6 +37,8 @@ class UndefinedResponseError(Exception):
 
 class Mercadopago:
     
+    orders = list()
+    notifications = list() 
 
     def __init__(self, client_id, client_secret):
         self.url_base = 'https://api.mercadolibre.com'
@@ -55,7 +57,8 @@ class Mercadopago:
 
         if not self.access_token:
             raise NoAccessTokenError('gil')
-
+        
+    
     def add_pending(self, url):
         self.pending_url = url
     def add_succesful(self, url):
