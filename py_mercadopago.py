@@ -101,7 +101,19 @@ class PyMercadopagoHandler:
 
     def push_orders(self, orders):
         for order in orders:
-            self.result.append(self.get_or_create_item(order.to_dict()))
+            result = self.get_or_create_item(order.to_dict())
+            self.result.append(Preference(result['collector_id'],
+                                          result['init_point'],
+                                          result['expiration_date_from'],
+                                          result['expiration_date_from'],
+                                          result['date_created'],
+                                          result['subscription_plan_id'],
+                                          result['id'],
+                                          result['expires'],
+                                          result['expiration_date_to'],
+                                          result['external_reference'],
+                                          result['payer'],
+                                          result['items']))
 
 
 class Order:
@@ -230,8 +242,38 @@ class Payer:
 
 class Back_Urls:
 
-    def __init__(self):
-        pass
-
     pending = ''
     success = ''
+
+
+class Preference:
+    collector_id = ''
+    init_point = ''
+    back_urls = None
+    expiration_date_from = ''
+    date_created = ''
+    subscription_plan_id = ''
+    id = ''
+    expires = ''
+    expiration_date_to = ''
+    external_reference = ''
+    payer = None
+    items = None
+
+    def __init__(
+            self, collector_id, init_point, back_urls,
+                  expiration_date_from, date_created, subscription_plan_id,
+                  id, expires, expiration_date_to, external_reference, payer
+                  , items):
+        self.collector_id = collector_id
+        self.init_point = init_point
+        self.back_urls = back_urls
+        self.expiration_date_from = expiration_date_from
+        self.date_created = date_created
+        self.subscription_plan_id = subscription_plan_id
+        self.id = id
+        self.expires = expires
+        self.expiration_date_to = expiration_date_to
+        self.external_reference = external_reference
+        self.payer = payer
+        self.items = items

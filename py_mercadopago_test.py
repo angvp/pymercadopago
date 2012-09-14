@@ -5,7 +5,7 @@ Created on Sep 11, 2012
 '''
 import unittest
 from py_mercadopago import PyMercadopagoHandler, NoAccessTokenError, UndefinedResponseError,\
-    Order, Item, Payer, Back_Urls
+    Order, Item, Payer, Back_Urls, Preference
 from urlparse import urlparse
 
 
@@ -19,17 +19,34 @@ class PyMercadopagoTest(unittest.TestCase):
         self.client_secret = '4zDgtKDKzC2krZw7FplnYVhTWbWkEMM0'
         self.mercadopago_handler = None
 
-    def test_AccessToken(self):
+    def test_access_token(self):
         try:
-            self.mercadopago_handler = PyMercadopagoHandler(self.client_id, self.client_secret)
+            self.mercadopago_handler = PyMercadopagoHandler(self.client_id,
+                                                            self.client_secret)
         except NoAccessTokenError:
             self.fail("No Access Token")
         except UndefinedResponseError:
             self.fail("Bad response creating token")
 
-        self.assertTrue(len(self.mercadopago_handler.access_token) == 63, "Invalid token size!!")
+        self.assertTrue(len(self.mercadopago_handler.access_token) == 63,
+                        "Invalid token size!!")
 
-    def testListOrderCreation(self):
+    def test_create_preference(self):
+        preference = Preference(collector_id='12344',
+                                init_point='url',
+                                expiration_date_from='date string',
+                                expiration_date_from='date string',
+                                date_created='date string',
+                                subscription_plan_id='string',
+                                id='valor retornado por MP',
+                                expires='string date',
+                                expiration_date_to='date string',
+                                external_reference='string date',
+                                payer='"payer":{}',
+                                items='"items":[{}]')
+        self.assertFalse(preference == None, "Error creating preference")
+
+    def test_list_order_creation(self):
         #batchMode
         mp_handler = PyMercadopagoHandler(self.client_id, self.client_secret)
         orders = list()
@@ -52,6 +69,7 @@ class PyMercadopagoTest(unittest.TestCase):
         orders.append(order)
         mp_handler.push_orders(orders)
         print mp_handler.result
+        self.assertFalse(mp_handler.result == None, "Get MercadoPago result Failed ")
 
     def tearDown(self):
         pass
