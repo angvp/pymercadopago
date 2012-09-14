@@ -162,37 +162,37 @@ class Order:
         return json.loads(str(self))
 
     def __repr__(self):
-        return_value = "{ \"external_reference\":\"" + \
-            self.external_reference + "\","
+        return_value = '{"external_reference":"' + \
+            self.external_reference + '",'
 
-        return_value += "\"items\":[{"
+        return_value += '"items":[{'
 
         for item in self.items:
             if item.id != '':
-                return_value += "\"id\":"
-                return_value += "\"" + item.id + "\","
+                return_value += '"id":'
+                return_value += '"' + item.id + '",'
 
-            return_value += "\"title\":"
-            return_value += "\"" + item.title + "\""
+            return_value += '"title":'
+            return_value += '"' + item.title + '"'
 
             if item.description != '':
-                return_value += ",\"description\":"
-                return_value += "\"" + item.description + "\""
+                return_value += ',"description":'
+                return_value += '"' + item.description + '"'
 
-            return_value += ",\"quantity\":"
+            return_value += ',"quantity":'
             return_value += str(item.quantity)
 
-            return_value += ",\"unit_price\":"
+            return_value += ',"unit_price":'
             return_value += str(item.unit_price)
 
-            return_value += ",\"currency_id\":"
-            return_value += "\"" + str(item.currency_id) + "\""
+            return_value += ',"currency_id":'
+            return_value += '"' + str(item.currency_id) + '"'
 
             if item.picture_url != '':
-                return_value += ",\"picture_url\":"
-                return_value += "\"" + item.picture_url + "\""
+                return_value += ',"picture_url":'
+                return_value += '"' + item.picture_url + '"'
 
-            return_value += "}]"
+            return_value += '}]'
 
         if self.payer != None:
             return_value = return_value + ',"payer":{'
