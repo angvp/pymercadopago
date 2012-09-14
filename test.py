@@ -1,7 +1,7 @@
 """
 # Comienzo de la implementacion
 """
-from pymercadopago import Mercadopago
+from pymercadopago import PyMercadopagoHandler
 
 
 if __name__ == '__main__':
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     clientID = 3803
     clientSecret = 'PwZ6B94AlYdOYyJ4xWr2Rl87tVPPeIlw'
-    mp = Mercadopago(clientID, clientSecret)
+    mp = PyMercadopagoHandler(clientID, clientSecret)
     access_token = mp.get_access_token()
 
     if access_token:
