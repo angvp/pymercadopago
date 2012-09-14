@@ -4,7 +4,7 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-from pyMercadopago import PyMercadopagoHandler, NoAccessTokenError, UndefinedResponseError,\
+from py_mercadopago import PyMercadopagoHandler, NoAccessTokenError, UndefinedResponseError,\
     Order, Item, Payer, Back_Urls
 from urlparse import urlparse
 
@@ -17,17 +17,17 @@ class PyMercadopagoTest(unittest.TestCase):
 
         self.client_id = 12823
         self.client_secret = '4zDgtKDKzC2krZw7FplnYVhTWbWkEMM0'
-        self.mercadopagoHandler = None
+        self.mercadopago_handler = None
 
     def test_AccessToken(self):
         try:
-            self.mercadopagoHandler = PyMercadopagoHandler(self.client_id, self.client_secret)
+            self.mercadopago_handler = PyMercadopagoHandler(self.client_id, self.client_secret)
         except NoAccessTokenError:
             self.fail("No Access Token")
         except UndefinedResponseError:
             self.fail("Bad response creating token")
 
-        self.assertTrue(len(self.mercadopagoHandler.access_token) == 63, "Invalid token size!!")
+        self.assertTrue(len(self.mercadopago_handler.access_token) == 63, "Invalid token size!!")
 
     def testListOrderCreation(self):
         #batchMode
@@ -39,10 +39,10 @@ class PyMercadopagoTest(unittest.TestCase):
         item.picture_url = "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif"
         item.id = "12345"
         item.description = "esta es la descripcion que quiero mandar con el producto"
-        order.addItem(item)
+        order.add_item(item)
 
         payer = Payer() #TODO factory for this
-        order.addPayer(payer)
+        order.add_payer(payer)
 
         back_urls = Back_Urls()
         back_urls.pending = "http://www.pending.com"
@@ -50,7 +50,7 @@ class PyMercadopagoTest(unittest.TestCase):
         order.back_urls = back_urls
 
         orders.append(order)
-        mpHandler.pushOrders(orders)
+        mpHandler.push_orders(orders)
         print mpHandler.result
 
     def tearDown(self):

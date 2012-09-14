@@ -39,8 +39,8 @@ class PyMercadopagoHandler:
 
     orders = list()
     notifications = list()
-    tokenGenerationStatusExpected = 200
-    createItemStatusExpected = 201
+    TOKEN_GENERATION_STATUS_EXPECTED = 200
+    CREATE_ITEM_STATUS_EXPECTED = 201
     result = None
 
     def __init__(self, client_id, client_secret):
@@ -85,7 +85,7 @@ class PyMercadopagoHandler:
                 'client_secret': self.client_secret
                 }
         url = self.url_oauth_token
-        response = self.post_data(data, self.tokenGenerationStatusExpected, url, 'text')
+        response = self.post_data(data, self.TOKEN_GENERATION_STATUS_EXPECTED, url, 'text')
         if response:
             resp_dict = json.loads(response)
             return resp_dict['access_token']
@@ -94,14 +94,14 @@ class PyMercadopagoHandler:
     def get_or_create_item(self, data):
 
         url = "%s%s" % (self.url_preference, self.access_token)
-        preference = self.post_data(data, self.createItemStatusExpected, url, 'json')
+        preference = self.post_data(data, self.CREATE_ITEM_STATUS_EXPECTED, url, 'json')
         if preference:
             return json.loads(preference)
         return False
 
-    def pushOrders(self, orders):
+    def push_orders(self, orders):
         for order in orders:
-            self.result.append(self.get_or_create_item(order.toDict()))
+            self.result.append(self.get_or_create_item(order.to_dict()))
 
 
 class Order:
@@ -117,35 +117,35 @@ class Order:
     expiration_dato_from = ''
     back_urls = None
 
-    def __init__(self, externalReference, internalId, collectorId):
+    def __init__(self, external_reference, internal_id, collector_id):
 
         #At constructor should be all required fields
-        self.external_reference = externalReference
-        self.collector_id = collectorId
-        self.id = internalId
+        self.external_reference = external_reference
+        self.collector_id = collector_id
+        self.id = internal_id
         self.items = list()
         self.payer = Payer()
 
-    def addItem(self, item):
+    def add_item(self, item):
         if self.items == None:
             self.items = list()
 
         self.items.append(item)
 
-    def addPayer(self, payer):
+    def add_payer(self, payer):
         self.payer = payer
 
-    def addSuccessUrl(self, url):
+    def add_successUrl(self, url):
         if self.back_urls == None:
             self.back_urls = Back_Urls
         self.back_ulrs.success = url
 
-    def addPendingUrl(self, url):
+    def add_pending_url(self, url):
         if self.back_urls == None:
             self.back_urls = Back_Urls()
         self.back_ulrs.pending = url
 
-    def toDict(self):
+    def to_dict(self):
 
         return json.loads(str(self))
 
@@ -214,11 +214,11 @@ class Item:
     currency_id = ''
     picture_url = ''
 
-    def __init__(self, title, quantity, unitPrice, currencyId):
+    def __init__(self, title, quantity, unit_price, currency_id):
         self.title = title
         self.quantity = quantity
-        self.unit_price = unitPrice
-        self.currency_id = currencyId
+        self.unit_price = unit_price
+        self.currency_id = currency_id
 
 
 class Payer:
