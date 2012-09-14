@@ -4,9 +4,8 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-from py_mercadopago import PyMercadopagoHandler, NoAccessTokenError, UndefinedResponseError,\
-    Order, Item, Payer, Back_Urls, Preference
-from urlparse import urlparse
+from py_mercadopago import PyMercadopagoHandler, NoAccessTokenError, \
+UndefinedResponseError, Order, Item, Payer, Back_Urls, Preference
 
 
 class PyMercadopagoTest(unittest.TestCase):
@@ -55,9 +54,11 @@ class PyMercadopagoTest(unittest.TestCase):
                       collector_id='5879')
         item = Item(title='Cuadro con Mother', quantity=100, unit_price=520,
                      currency_id='ARS')
-        item.picture_url = "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif"
+        item.picture_url = "https://www.mercadopago.com/org-img/MP3/home/ \
+        logomp3.gif"
         item.id = "12345"
-        item.description = "esta es la descripcion que quiero mandar con el producto"
+        item.description = "esta es la descripcion que quiero mandar\
+         con el producto"
         order.add_item(item)
 
         payer = Payer()     # TODO factory for this

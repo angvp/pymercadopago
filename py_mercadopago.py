@@ -46,8 +46,12 @@ class PyMercadopagoHandler:
     def __init__(self, client_id, client_secret):
         self.url_base = 'https://api.mercadolibre.com'
         self.url_oauth_token = "%s/oauth/token" % self.url_base
-        self.url_preference = "%s/checkout/preferences?access_token=" % self.url_base
-        self.url_status_preference = "%s/checkout/preferences/ping" % self.url_base
+        self.url_preference = "%s/checkout/preferences?access_token=" \
+        % self.url_base
+
+        self.url_status_preference = "%s/checkout/preferences/ping" \
+        % self.url_base
+
         self.client_id = client_id
         self.client_secret = client_secret
         if self.client_id == '' or self.client_secret == '':
@@ -85,7 +89,8 @@ class PyMercadopagoHandler:
                 'client_secret': self.client_secret
                 }
         url = self.url_oauth_token
-        response = self.post_data(data, self.TOKEN_GENERATION_STATUS_EXPECTED, url, 'text')
+        response = self.post_data(data, self.TOKEN_GENERATION_STATUS_EXPECTED,
+                                  url, 'text')
         if response:
             resp_dict = json.loads(response)
             return resp_dict['access_token']
@@ -94,7 +99,8 @@ class PyMercadopagoHandler:
     def get_or_create_item(self, data):
 
         url = "%s%s" % (self.url_preference, self.access_token)
-        preference = self.post_data(data, self.CREATE_ITEM_STATUS_EXPECTED, url, 'json')
+        preference = self.post_data(data, self.CREATE_ITEM_STATUS_EXPECTED,
+                                    url, 'json')
         if preference:
             return json.loads(preference)
         return False
