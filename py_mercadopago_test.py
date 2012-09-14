@@ -31,11 +31,11 @@ class PyMercadopagoTest(unittest.TestCase):
 
     def testListOrderCreation(self):
         #batchMode
-        mpHandler = PyMercadopagoHandler(self.client_id, self.client_secret)
+        mp_handler = PyMercadopagoHandler(self.client_id, self.client_secret)
         orders = list()
 
-        order = Order(externalReference="OP1234", internalId='1ZQM2', collectorId='5879');
-        item = Item(title='Cuadro con Mother', quantity=100, unitPrice=520, currencyId='ARS')
+        order = Order(external_reference="OP1234", internal_id='1ZQM2', collector_id='5879');
+        item = Item(title='Cuadro con Mother', quantity=100, unit_price=520, currency_id='ARS')
         item.picture_url = "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif"
         item.id = "12345"
         item.description = "esta es la descripcion que quiero mandar con el producto"
@@ -50,8 +50,8 @@ class PyMercadopagoTest(unittest.TestCase):
         order.back_urls = back_urls
 
         orders.append(order)
-        mpHandler.push_orders(orders)
-        print mpHandler.result
+        mp_handler.push_orders(orders)
+        print mp_handler.result
 
     def tearDown(self):
         pass
