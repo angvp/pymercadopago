@@ -277,3 +277,6 @@ class Preference:
         self.external_reference = external_reference
         self.payer = payer
         self.items = items
+
+    def __repr__(self):
+        return str(self.collector_id) + ' ' + self.id + ' ' + self.init_point

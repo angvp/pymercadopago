@@ -35,7 +35,7 @@ class PyMercadopagoTest(unittest.TestCase):
         preference = Preference(collector_id='12344',
                                 init_point='url',
                                 expiration_date_from='date string',
-                                expiration_date_from='date string',
+                                back_urls='"back_urls":{}',
                                 date_created='date string',
                                 subscription_plan_id='string',
                                 id='valor retornado por MP',
@@ -51,14 +51,16 @@ class PyMercadopagoTest(unittest.TestCase):
         mp_handler = PyMercadopagoHandler(self.client_id, self.client_secret)
         orders = list()
 
-        order = Order(external_reference="OP1234", internal_id='1ZQM2', collector_id='5879');
-        item = Item(title='Cuadro con Mother', quantity=100, unit_price=520, currency_id='ARS')
+        order = Order(external_reference="OP1234", internal_id='1ZQM2',
+                      collector_id='5879')
+        item = Item(title='Cuadro con Mother', quantity=100, unit_price=520,
+                     currency_id='ARS')
         item.picture_url = "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif"
         item.id = "12345"
         item.description = "esta es la descripcion que quiero mandar con el producto"
         order.add_item(item)
 
-        payer = Payer() #TODO factory for this
+        payer = Payer()     # TODO factory for this
         order.add_payer(payer)
 
         back_urls = Back_Urls()
@@ -69,11 +71,14 @@ class PyMercadopagoTest(unittest.TestCase):
         orders.append(order)
         mp_handler.push_orders(orders)
         print mp_handler.result
-        self.assertFalse(mp_handler.result == None, "Get MercadoPago result Failed ")
+        self.assertFalse(mp_handler.result == None,
+                          "Get MercadoPago result Failed ")
+        for preference in mp_handler.result:
+            print preference
 
     def tearDown(self):
         pass
 
 if __name__ == "__main__":
-    import sys; sys.argv = ['', 'Test.testName']
+    import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
