@@ -41,6 +41,7 @@ class PyMercadopagoHandler:
     notifications = list()
     tokenGenerationStatusExpected = 200
     createItemStatusExpected = 201
+    result = None
 
     def __init__(self, client_id, client_secret):
         self.url_base = 'https://api.mercadolibre.com'
@@ -55,9 +56,12 @@ class PyMercadopagoHandler:
         self.access_token = self.get_access_token()
 
         if not self.access_token:
-            raise NoAccessTokenError('gil')
+            raise NoAccessTokenError()
+
+        self.result = list()
 
     def post_data(self, data, rcode, url, utype):
+
         if utype == 'json':
             headers = {'Content-type': 'application/json',
                     'Accept': 'application/json'}
@@ -65,6 +69,7 @@ class PyMercadopagoHandler:
         else:
             headers = {'Content-type': 'application/x-www-form-urlencoded',
                     'Accept': 'application/json'}
+
         r = requests.post(url, data=data, headers=headers)
         if r.status_code == rcode:
             return r.content
@@ -87,8 +92,8 @@ class PyMercadopagoHandler:
         return False
 
     def get_or_create_item(self, data):
-        url = "%s%s" % (self.url_preference, self.access_token)
 
+        url = "%s%s" % (self.url_preference, self.access_token)
         preference = self.post_data(data, self.createItemStatusExpected, url, 'json')
         if preference:
             return json.loads(preference)
@@ -96,13 +101,7 @@ class PyMercadopagoHandler:
 
     def pushOrders(self, orders):
         for order in orders:
-            print self.get_or_create_item(order.toJson())
-
-    def __unicode__(self):
-        return 'json: '
-
-    def __str__(self):
-        return 'json: '
+            self.result.append(self.get_or_create_item(order.toDict()))
 
 
 class Order:
@@ -146,42 +145,61 @@ class Order:
             self.back_urls = Back_Urls()
         self.back_ulrs.pending = url
 
-    def toJson(self):
-        print self
-        return json.dumps(str(self))
+    def toDict(self):
+
+        return json.loads(str(self))
 
     def __repr__(self):
         return_value = "{ \"external_reference\":\"" + \
             self.external_reference + "\","
 
-        return_value = return_value + "\"items\":[{"
+        return_value += "\"items\":[{"
 
         for item in self.items:
             if item.id != '':
-                return_value = return_value + "\"id\":"
-                return_value = return_value + "\"" + item.id + "\","
+                return_value += "\"id\":"
+                return_value += "\"" + item.id + "\","
 
-            return_value = return_value + "\"title\":"
-            return_value = return_value + "\"" + item.title + "\""
+            return_value += "\"title\":"
+            return_value += "\"" + item.title + "\""
 
             if item.description != '':
-                return_value = return_value + ",\"description\":"
-                return_value = return_value + "\"" + item.description + "\""
+                return_value += ",\"description\":"
+                return_value += "\"" + item.description + "\""
 
-            return_value = return_value + ",\"quantity\":"
-            return_value = return_value + str(item.quantity)
+            return_value += ",\"quantity\":"
+            return_value += str(item.quantity)
 
-            return_value = return_value + ",\"unit_price\":"
-            return_value = return_value + str(item.unit_price)
+            return_value += ",\"unit_price\":"
+            return_value += str(item.unit_price)
 
-            return_value = return_value + ",\"currency_id\":"
-            return_value = return_value + "\"" + str(item.currency_id) + "\""
+            return_value += ",\"currency_id\":"
+            return_value += "\"" + str(item.currency_id) + "\""
 
             if item.picture_url != '':
-                return_value = return_value + ",\"picture_url\":"
-                return_value = return_value + "\"" + item.picture_url + "\""
+                return_value += ",\"picture_url\":"
+                return_value += "\"" + item.picture_url + "\""
 
-            return_value = return_value + "}]}"
+            return_value += "}]"
+
+        if self.payer != None:
+            return_value = return_value + ',"payer":{'
+            if self.payer.name != '':
+                return_value += '"name":' + '"' + self.payer.name + '"'
+            if self.payer.surname != '':
+                return_value += ',"surname":' + '"' + self.payer.surname + '"'
+            if self.payer.email != '':
+                return_value += ',"email":' + '"' + self.payer.email + '"'
+
+            return_value += '}'
+
+        if self.back_urls != None:
+            return_value += ',"back_urls":{'
+            return_value += '"success":"' + self.back_urls.success + '"'
+            return_value += ',"pending":"' + self.back_urls.pending + '"'
+            return_value += '}'
+
+        return_value += '}'
 
         return return_value
 
@@ -211,6 +229,9 @@ class Payer:
 
 
 class Back_Urls:
+
+    def __init__(self):
+        pass
 
     pending = ''
     success = ''
