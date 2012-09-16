@@ -132,7 +132,7 @@ class Order:
     init_point = ''
     expires = ''
     expiration_date_to = ''
-    expiration_dato_from = ''
+    expiration_date_from = ''
     back_urls = None
 
     def __init__(self, external_reference, internal_id, collector_id):
