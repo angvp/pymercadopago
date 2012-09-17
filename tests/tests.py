@@ -4,12 +4,6 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-"""
-from pymercadopago.pymercadopago import PyMercadopagoHandler, MPOrder, MPItem,\
- MPPayer, Back_Urls, MPPreference
-from pymercadopago.exceptions import  NoAccessTokenError,\
- UndefinedResponseError
-"""
 from urlparse import urlparse
 from pymercadopago import Handler, MPOrder, MPItem, MPPayer, MPBackUrls, \
     MPPreference
