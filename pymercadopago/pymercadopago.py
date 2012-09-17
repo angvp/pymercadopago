@@ -15,7 +15,7 @@ Angel 'angvp' Velasquez <angvp@archlinux.org>
 """
 import requests
 import json
-
+from exceptions import NoAccessTokenError, UndefinedResponseError
 
 
 class PyMercadopagoHandler:

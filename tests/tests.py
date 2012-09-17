@@ -74,13 +74,14 @@ class PyMercadopagoTest(unittest.TestCase):
 
         orders.append(order)
         mp_handler.push_orders(orders)
-        print mp_handler.result
+
         self.assertFalse(mp_handler.result == None,
                           "Getting MercadoPago results Failed ")
         #Url element will be verified for valid url string
         for preference in mp_handler.result:
+            print preference
             parsed = urlparse(preference.init_point)
-            self.assertFalse(parsed.scheme != '' or parsed.netloc != '' or
+            self.assertTrue(parsed.scheme != '' or parsed.netloc != '' or
                              parsed.path != '' or parsed.query != '',
                               'Error validating result url')
 
