@@ -118,12 +118,12 @@ class MPOrder:
     def add_successUrl(self, url):
         if self.back_urls == None:
             self.back_urls = MPBackUrls
-        self.back_ulrs.success = url
+        self.back_urls.success = url
 
     def add_pending_url(self, url):
         if self.back_urls == None:
             self.back_urls = MPBackUrls()
-        self.back_ulrs.pending = url
+        self.back_urls.pending = url
 
     def to_dict(self):
 
@@ -152,7 +152,7 @@ class MPOrder:
 
             return_value += ',"unit_price":'
             return_value += str(item.unit_price)
-New 
+
             return_value += ',"currency_id":'
             return_value += '"' + str(item.currency_id) + '"'
 

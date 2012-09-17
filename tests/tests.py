@@ -6,7 +6,7 @@ Created on Sep 11, 2012
 import unittest
 from urlparse import urlparse
 from pymercadopago import Handler, MPOrder, MPItem, MPPayer, MPBackUrls, \
-    MPPreference
+    MPPreference, MPPaymentMethods
 
 
 class PyMercadopagoTest(unittest.TestCase):
@@ -87,6 +87,13 @@ class PyMercadopagoTest(unittest.TestCase):
             self.assertTrue(parsed.scheme != '' or parsed.netloc != '' or
                              parsed.path != '' or parsed.query != '',
                               'Error validating result url')
+
+    def test_exclude_payment_method(self):
+        exclude_payment_methods = {"id": "visa","name": "Visa",
+        "payment_type_id": "credit_card",
+        "thumbnail": "http://img.mlstatic.com/org-img/MP3/API/logos/visa.gif",
+        "secure_thumbnail": "https://www.mercadopago.com/org-img/MP3/API/logos/visa.gif"}
+        payment = MPPaymentMethods
 
     def tearDown(self):
         pass
