@@ -4,11 +4,15 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
+"""
 from pymercadopago.pymercadopago import PyMercadopagoHandler, MPOrder, MPItem,\
  MPPayer, Back_Urls, MPPreference
 from pymercadopago.exceptions import  NoAccessTokenError,\
  UndefinedResponseError
+"""
 from urlparse import urlparse
+from pymercadopago import Handler, MPOrder, MPItem, MPPayer, MPBackUrls, \
+    MPPreference
 
 
 class PyMercadopagoTest(unittest.TestCase):
@@ -23,7 +27,7 @@ class PyMercadopagoTest(unittest.TestCase):
 
     def test_access_token(self):
         try:
-            self.mercadopago_handler = PyMercadopagoHandler(self.client_id,
+            self.mercadopago_handler = Handler(self.client_id,
                                                             self.client_secret)
         except NoAccessTokenError:
             self.fail("No Access Token")
@@ -55,7 +59,7 @@ class PyMercadopagoTest(unittest.TestCase):
 
     def test_list_order_creation(self):
         #batchMode
-        mp_handler = PyMercadopagoHandler(self.client_id, self.client_secret)
+        mp_handler = Handler(self.client_id, self.client_secret)
         orders = list()
 
         order = MPOrder(external_reference="OP1234", internal_id='1ZQM2',
@@ -72,7 +76,7 @@ class PyMercadopagoTest(unittest.TestCase):
         payer = MPPayer()     # TODO factory for this
         order.add_payer(payer)
 
-        back_urls = Back_Urls()
+        back_urls = MPBackUrls()
         back_urls.pending = "http://www.pending.com"
         back_urls.success = "http://www.success.com"
         order.back_urls = back_urls
@@ -94,5 +98,5 @@ class PyMercadopagoTest(unittest.TestCase):
         pass
 
 if __name__ == "__main__":
-    import sys;sys.argv = ['', 'Test.testName']
+    #import sys;sys.argv = ['', 'PyMercadoPagoTest']
     unittest.main()
