@@ -91,18 +91,7 @@ class PyMercadopagoHandler:
     def push_orders(self, orders):
         for order in orders:
             result = self.get_or_create_item(order.to_dict())
-            self.result.append(Preference(result['collector_id'],
-                                          result['init_point'],
-                                          result['expiration_date_from'],
-                                          result['expiration_date_from'],
-                                          result['date_created'],
-                                          result['subscription_plan_id'],
-                                          result['id'],
-                                          result['expires'],
-                                          result['expiration_date_to'],
-                                          result['external_reference'],
-                                          result['payer'],
-                                          result['items']))
+            self.result.append(Preference(result))
 
 
 class Order:
@@ -250,22 +239,19 @@ class Preference:
     items = None
 
     def __init__(
-            self, collector_id, init_point, back_urls,
-                  expiration_date_from, date_created, subscription_plan_id,
-                  id, expires, expiration_date_to, external_reference, payer
-                  , items):
-        self.collector_id = collector_id
-        self.init_point = init_point
-        self.back_urls = back_urls
-        self.expiration_date_from = expiration_date_from
-        self.date_created = date_created
-        self.subscription_plan_id = subscription_plan_id
-        self.id = id
-        self.expires = expires
-        self.expiration_date_to = expiration_date_to
-        self.external_reference = external_reference
-        self.payer = payer
-        self.items = items
+            self, result):
+        self.collector_id = result['collector_id']
+        self.init_point = result['init_point']
+        self.back_urls = result['back_urls']
+        self.expiration_date_from = result['expiration_date_from']
+        self.date_created = result['date_created']
+        self.subscription_plan_id = result['subscription_plan_id']
+        self.id = result['id']
+        self.expires = result['expires']
+        self.expiration_date_to = result['expiration_date_to']
+        self.external_reference = result['external_reference']
+        self.payer = result['payer']
+        self.items = result['items']
 
     def __repr__(self):
         return str(self.collector_id) + ' ' + self.id + ' ' + self.init_point

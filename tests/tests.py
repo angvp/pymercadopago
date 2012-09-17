@@ -34,18 +34,23 @@ class PyMercadopagoTest(unittest.TestCase):
                         "Invalid token size!!")
 
     def test_create_preference(self):
-        preference = Preference(collector_id='12344',
-                                init_point='url',
-                                expiration_date_from='date string',
-                                back_urls='"back_urls":{}',
-                                date_created='date string',
-                                subscription_plan_id='string',
-                                id='valor retornado por MP',
-                                expires='string date',
-                                expiration_date_to='date string',
-                                external_reference='string date',
-                                payer='"payer":{}',
-                                items='"items":[{}]')
+
+        result_dummie = {'collector_id': '1234',
+                         'init_point': 'http://www.mercadolibre.com.ar/path',
+                         'expiration_date_from': '2012-02-29',
+                         'back_urls': {'pending': "http://www.pending.com",
+                         'success': 'http://www.success.com'},
+                         'date_created': "2012-02-29",
+                         'subscription_plan_id': '23', 'id': 1234,
+                         'expires': '2012-03-21',
+                         'expiration_date_to': '2012-03-21',
+                         'external_reference': 'OP1234',
+                         'payer': {'name': 'Diego', 'surname': 'darkipunchi'},
+                         'items': {'title': 'Cuadro con Mother',
+                                   'quantity': 10, 'unit_price': 50,
+                                   'currency_id': 'ARS'}}
+
+        preference = Preference(result_dummie)
         self.assertFalse(preference == None, "Error creating preference")
 
     def test_list_order_creation(self):
