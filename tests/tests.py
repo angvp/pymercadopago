@@ -6,6 +6,7 @@ Created on Sep 11, 2012
 import unittest
 from py_mercadopago import PyMercadopagoHandler, NoAccessTokenError, \
 UndefinedResponseError, Order, Item, Payer, Back_Urls, Preference
+from urlparse import urlparse
 
 
 class PyMercadopagoTest(unittest.TestCase):
@@ -73,9 +74,13 @@ class PyMercadopagoTest(unittest.TestCase):
         mp_handler.push_orders(orders)
         print mp_handler.result
         self.assertFalse(mp_handler.result == None,
-                          "Get MercadoPago result Failed ")
+                          "Getting MercadoPago results Failed ")
+        #Url element will be verified for valid url string
         for preference in mp_handler.result:
-            print preference
+            parsed = urlparse(preference.init_point)
+            self.assertFalse(parsed.scheme != '' or parsed.netloc != '' or
+                             parsed.path != '' or parsed.query != '',
+                              'Error validating result url')
 
     def tearDown(self):
         pass
