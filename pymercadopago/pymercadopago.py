@@ -254,4 +254,5 @@ class Preference:
         self.items = result['items']
 
     def __repr__(self):
-        return str(self.collector_id) + ' ' + self.id + ' ' + self.init_point
+        return 'Collector_id: ' + str(self.collector_id) + \
+         ' Preference_id:' + self.id + ' Init_point:' + self.init_point
