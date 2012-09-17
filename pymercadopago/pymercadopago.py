@@ -2,23 +2,13 @@
 """
 PyMercadopagoHandler Class:
 ==================
-
-This class is intended to be used as simplifier of handling several http
-connections to the mercadopago payment gateway.
-
-Feel free to modify this code and improve it, this is licenced by GPL v2
-
-More information about GPL License: http://www.gnu.org/licenses/gpl-2.0.html
-
-Angel 'angvp' Velasquez <angvp@archlinux.org>
-
 """
 import requests
 import json
 from exceptions import NoAccessTokenError, UndefinedResponseError
 
 
-class PyMercadopagoHandler:
+class Handler:
 
     orders = list()
     notifications = list()
@@ -127,12 +117,12 @@ class MPOrder:
 
     def add_successUrl(self, url):
         if self.back_urls == None:
-            self.back_urls = Back_Urls
+            self.back_urls = MPBackUrls
         self.back_ulrs.success = url
 
     def add_pending_url(self, url):
         if self.back_urls == None:
-            self.back_urls = Back_Urls()
+            self.back_urls = MPBackUrls()
         self.back_ulrs.pending = url
 
     def to_dict(self):
@@ -218,7 +208,7 @@ class MPPayer:
     email = ''
 
 
-class Back_Urls:
+class MPBackUrls:
 
     pending = ''
     success = ''
