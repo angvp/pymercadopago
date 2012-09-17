@@ -91,10 +91,10 @@ class PyMercadopagoHandler:
     def push_orders(self, orders):
         for order in orders:
             result = self.get_or_create_item(order.to_dict())
-            self.result.append(Preference(result))
+            self.result.append(MPPreference(result))
 
 
-class Order:
+class MPOrder:
     items = None
     payer = None
     external_reference = ''
@@ -114,7 +114,7 @@ class Order:
         self.collector_id = collector_id
         self.id = internal_id
         self.items = list()
-        self.payer = Payer()
+        self.payer = MPPayer()
 
     def add_item(self, item):
         if self.items == None:
@@ -194,7 +194,7 @@ class Order:
         return return_value
 
 
-class Item:
+class MPItem:
 
     id = ''
     title = ''
@@ -211,7 +211,7 @@ class Item:
         self.currency_id = currency_id
 
 
-class Payer:
+class MPPayer:
 
     name = ''
     surname = ''
@@ -224,7 +224,7 @@ class Back_Urls:
     success = ''
 
 
-class Preference:
+class MPPreference:
     collector_id = ''
     init_point = ''
     back_urls = None

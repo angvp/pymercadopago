@@ -4,8 +4,8 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-from pymercadopago.pymercadopago import PyMercadopagoHandler, Order, Item,\
- Payer, Back_Urls, Preference
+from pymercadopago.pymercadopago import PyMercadopagoHandler, MPOrder, MPItem,\
+ MPPayer, Back_Urls, MPPreference
 from pymercadopago.exceptions import  NoAccessTokenError,\
  UndefinedResponseError
 from urlparse import urlparse
@@ -50,7 +50,7 @@ class PyMercadopagoTest(unittest.TestCase):
                                    'quantity': 10, 'unit_price': 50,
                                    'currency_id': 'ARS'}}
 
-        preference = Preference(result_dummie)
+        preference = MPPreference(result_dummie)
         self.assertFalse(preference == None, "Error creating preference")
 
     def test_list_order_creation(self):
@@ -58,9 +58,9 @@ class PyMercadopagoTest(unittest.TestCase):
         mp_handler = PyMercadopagoHandler(self.client_id, self.client_secret)
         orders = list()
 
-        order = Order(external_reference="OP1234", internal_id='1ZQM2',
+        order = MPOrder(external_reference="OP1234", internal_id='1ZQM2',
                       collector_id='5879')
-        item = Item(title='Cuadro con Mother', quantity=100, unit_price=520,
+        item = MPItem(title='Cuadro con Mother', quantity=100, unit_price=520,
                      currency_id='ARS')
         item.picture_url = "https://www.mercadopago.com/org-img/MP3/home/ \
         logomp3.gif"
@@ -69,7 +69,7 @@ class PyMercadopagoTest(unittest.TestCase):
          con el producto"
         order.add_item(item)
 
-        payer = Payer()     # TODO factory for this
+        payer = MPPayer()     # TODO factory for this
         order.add_payer(payer)
 
         back_urls = Back_Urls()
