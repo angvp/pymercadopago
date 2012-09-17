@@ -4,8 +4,10 @@ Created on Sep 11, 2012
 @author: diego
 '''
 import unittest
-from py_mercadopago import PyMercadopagoHandler, NoAccessTokenError, \
-UndefinedResponseError, Order, Item, Payer, Back_Urls, Preference
+from pymercadopago.pymercadopago import PyMercadopagoHandler, Order, Item,\
+ Payer, Back_Urls, Preference
+from pymercadopago.exceptions import  NoAccessTokenError,\
+ UndefinedResponseError
 from urlparse import urlparse
 
 
