@@ -10,16 +10,26 @@ packages = [
     'pymercadopago',
 ]
 
+description = "A library to interact with the MercadoPago gateway payment"
+
 setup(
-    name = "pymercadopago",
-    version = "0.0.1",
-    author = "Angel Velasquez, Diego Ramirez",
-    author_email = "angel.velasquez@elo7.com, diego.ramirez@elo7.com",
-    description = ("A library to interact with the Mercadopago gateway payment "),
-    license = "MIT",
-    keywords = "mercadopago pymercadopago",
-    url = "https://bitbucket.org/angvp/pymercadopago",
-    package_data={'pymercadopago': ['tests/*', ]},
+    name="pymercadopago",
+    version="0.0.2",
+    author="Angel Velasquez, Diego Ramirez",
+    author_email="angel.velasquez@elo7.com, diego.ramirez@elo7.com",
+    description=description,
+    license="MIT",
+    keywords="mercadopago pymercadopago",
+    url="https://bitbucket.org/angvp/pymercadopago",
+    packages=packages,
+    package_data={'pymercadopago':
+        [
+            'pymercadopago/*',
+            'LICENSE.txt',
+            'README',
+            'CHANGES.txt',
+        ]
+        },
     include_package_data=True,
     platforms=['Platform Independent'],
     classifiers=[
@@ -32,5 +42,4 @@ setup(
         'License :: OSI Approved :: MIT License',
     ],
     install_requires=required,
-    packages=packages,
 )
