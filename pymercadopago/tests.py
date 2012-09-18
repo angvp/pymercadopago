@@ -89,7 +89,7 @@ class PyMercadopagoTest(unittest.TestCase):
                               'Error validating result url')
 
     def test_exclude_payment_method(self):
-        exclude_payment_methods = {"id": "visa","name": "Visa",
+        exclude_payment_methods = {"id": "visa", "name": "Visa",
         "payment_type_id": "credit_card",
         "thumbnail": "http://img.mlstatic.com/org-img/MP3/API/logos/visa.gif",
         "secure_thumbnail": "https://www.mercadopago.com/org-img/MP3/API/logos/visa.gif"}
@@ -99,5 +99,4 @@ class PyMercadopagoTest(unittest.TestCase):
         pass
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'PyMercadoPagoTest']
     unittest.main()
