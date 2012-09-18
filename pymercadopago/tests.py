@@ -5,8 +5,9 @@ Created on Sep 11, 2012
 '''
 import unittest
 from urlparse import urlparse
-from pymercadopago import Handler, MPOrder, MPItem, MPPayer, MPBackUrls, \
-    MPPreference, MPPaymentMethods
+
+from api import Handler, MPOrder, MPItem, MPPayer, MPBackUrls, MPPreference, \
+        MPPaymentMethods
 
 
 class PyMercadopagoTest(unittest.TestCase):
@@ -67,7 +68,7 @@ class PyMercadopagoTest(unittest.TestCase):
          con el producto"
         order.add_item(item)
 
-        payer = MPPayer()     # TODO factory for this
+        payer = MPPayer()
         order.add_payer(payer)
 
         back_urls = MPBackUrls()
