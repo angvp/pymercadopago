@@ -1,6 +1,6 @@
-from exceptions import NoAccessTokenError, UndefinedResponseError
+#!/usr/bin/python
 
-from pymercadopago import MPOrder, MPItem, MPPayer, MPPreference, MPBackUrls, \
-        Handler
+from mpexceptions import NoAccessTokenError, UndefinedResponseError
 
-
+from api import MPOrder, MPItem, MPPayer, MPPreference, MPBackUrls, \
+        Handler, MPPaymentMethods
