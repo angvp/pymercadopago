@@ -6,8 +6,8 @@ Created on Sep 11, 2012
 import unittest
 from urlparse import urlparse
 
-from api import Handler, MPOrder, MPItem, MPPayer, MPBackUrls, MPPreference, \
-        MPPaymentMethods
+from api import Handler, MPOrder, MPItem, MPPayer, MPBackUrls, MPPreference
+from mpexceptions import NoAccessTokenError, UndefinedResponseError
 
 
 class PyMercadopagoTest(unittest.TestCase):
@@ -94,7 +94,7 @@ class PyMercadopagoTest(unittest.TestCase):
         "payment_type_id": "credit_card",
         "thumbnail": "http://img.mlstatic.com/org-img/MP3/API/logos/visa.gif",
         "secure_thumbnail": "https://www.mercadopago.com/org-img/MP3/API/logos/visa.gif"}
-        payment = MPPaymentMethods
+        exclude_payment_types = {}
 
     def tearDown(self):
         pass

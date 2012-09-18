@@ -248,6 +248,7 @@ class MPPreference:
         return 'Collector_id: ' + str(self.collector_id) + \
          ' Preference_id:' + self.id + ' Init_point:' + self.init_point
 
+
 class MPPaymentMethods:
     excluded_payment_types = ''
     excluded_payment_methods = ''
