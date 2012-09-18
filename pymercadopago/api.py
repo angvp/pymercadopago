@@ -3,9 +3,10 @@
 PyMercadopagoHandler Class:
 ==================
 """
+from mpexceptions import NoAccessTokenError, UndefinedResponseError
+
 import requests
 import json
-from exceptions import NoAccessTokenError, UndefinedResponseError
 
 
 class Handler:
@@ -206,11 +207,6 @@ class MPPayer:
     name = ''
     surname = ''
     email = ''
-
-    def __init__(self, name, surname, email):
-        self.name = name
-        self.surname = surname
-        self.email = email
 
 
 class MPBackUrls:
