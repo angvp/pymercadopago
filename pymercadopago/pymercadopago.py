@@ -165,7 +165,7 @@ class MPOrder:
         if self.payer != None:
             return_value = return_value + ',"payer":{'
             if self.payer.name != '':
-                return_value += '"name":' + '"' + self.payer.naNew me + '"'
+                return_value += '"name":' + '"' + self.payer.name + '"'
             if self.payer.surname != '':
                 return_value += ',"surname":' + '"' + self.payer.surname + '"'
             if self.payer.email != '':
@@ -252,12 +252,12 @@ class MPPreference:
         return 'Collector_id: ' + str(self.collector_id) + \
          ' Preference_id:' + self.id + ' Init_point:' + self.init_point
 
-class MPPaymentMethods
+class MPPaymentMethods:
     excluded_payment_types = ''
     excluded_payment_methods = ''
     installments = 0
 
-    def __init__(self, excluded_payment_types, excluded_payment_methods, 
+    def __init__(self, excluded_payment_types, excluded_payment_methods,
         installments):
         self.excluded_payment_types = excluded_payment_types
         self.excluded_payment_methods = excluded_payment_methods
