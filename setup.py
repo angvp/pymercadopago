@@ -14,7 +14,7 @@ description = "A library to interact with the MercadoPago gateway payment"
 
 setup(
     name="pymercadopago",
-    version="0.0.2",
+    version="0.0.3",
     author="Angel Velasquez, Diego Ramirez",
     author_email="angel.velasquez@elo7.com, diego.ramirez@elo7.com",
     description=description,
