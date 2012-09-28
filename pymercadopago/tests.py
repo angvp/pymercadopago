@@ -6,9 +6,8 @@ Created on Sep 11, 2012
 import unittest
 from urlparse import urlparse
 
-from api import Handler, MPOrder, MPItem, MPPayer, MPBackUrls, MPPreference
-from mpexceptions import NoAccessTokenError, UndefinedResponseError
-
+from api import *
+from mpexceptions import *
 
 class PyMercadopagoTest(unittest.TestCase):
 
