@@ -3,10 +3,6 @@
 PyMercadopagoHandler Class:
 ==================
 """
-"""
-from mpexceptions import NoAccessTokenError, UndefinedResponseError, \
-    EmptyCredentialsError
-"""
 from mpexceptions import *
 
 import requests
@@ -131,62 +127,39 @@ class MPOrder:
         self.back_urls.pending = url
 
     def to_dict(self):
-
-        return json.loads(str(self))
-
-    def __repr__(self):
-        return_value = '{"external_reference":"' + \
-            self.external_reference + '",'
-
-        return_value += '"items":[{'
-
+        value = {}
+        value['external_reference'] = self.external_reference
+        items = []
+        item_dict = {}
         for item in self.items:
             if item.id != '':
-                return_value += '"id":'
-                return_value += '"' + item.id + '",'
-
-            return_value += '"title":'
-            return_value += '"' + item.title + '"'
-
+                item_dict['id'] = item.id
             if item.description != '':
-                return_value += ',"description":'
-                return_value += '"' + item.description + '"'
-
-            return_value += ',"quantity":'
-            return_value += str(item.quantity)
-
-            return_value += ',"unit_price":'
-            return_value += str(item.unit_price)
-
-            return_value += ',"currency_id":'
-            return_value += '"' + str(item.currency_id) + '"'
-
+                item_dict['description'] = item.description
             if item.picture_url != '':
-                return_value += ',"picture_url":'
-                return_value += '"' + item.picture_url + '"'
-
-            return_value += '}]'
+                item_dict['picture_url'] = item.picture_url
+            item_dict['title'] = item.title
+            item_dict['quantity'] = item.quantity
+            item_dict['unit_price'] = item.unit_price
+            item_dict['currency_id'] = str(item.currency_id)
+            items.append(item_dict)
+        value['items'] = items
 
         if self.payer != None:
-            return_value = return_value + ',"payer":{'
+            payer = {}
             if self.payer.name != '':
-                return_value += '"name":' + '"' + self.payer.name + '"'
+                payer['name'] = self.payer.name
             if self.payer.surname != '':
-                return_value += ',"surname":' + '"' + self.payer.surname + '"'
+                payer['surname'] = self.payer.surname
             if self.payer.email != '':
-                return_value += ',"email":' + '"' + self.payer.email + '"'
-
-            return_value += '}'
-
+                payer['email'] = self.payer.email
+            value['payer'] = payer
         if self.back_urls != None:
-            return_value += ',"back_urls":{'
-            return_value += '"success":"' + self.back_urls.success + '"'
-            return_value += ',"pending":"' + self.back_urls.pending + '"'
-            return_value += '}'
-
-        return_value += '}'
-
-        return return_value
+            back_urls = {}
+            back_urls['success'] = self.back_urls.success
+            back_urls['pending'] = self.back_urls.pending
+            value['back_urls'] = back_urls
+        return value
 
 
 class MPItem:
@@ -264,4 +237,3 @@ class MPPaymentMethods:
         self.excluded_payment_types = excluded_payment_types
         self.excluded_payment_methods = excluded_payment_methods
         self.installments = installments
-
