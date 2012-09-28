@@ -249,8 +249,9 @@ class MPPreference:
         self.items = result['items']
 
     def __repr__(self):
-        return 'Collector_id: ' + str(self.collector_id) + \
-         ' Preference_id:' + self.id + ' Init_point:' + self.init_point
+         return "Collector_id: %s Preference_id: %s Init_point: %s" % (
+                str(self.collector_id), self.id, self.init_point
+                )
 
 
 class MPPaymentMethods:
