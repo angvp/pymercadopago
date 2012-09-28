@@ -1,2 +1,4 @@
+v<0.0.3>, <2012-09-27>  -- Adding new exceptions, fixing tests, removing __repr__ on MPOrder and 
+merging with MPOrder.to_dict methodand sorting imports
 v<0.0.2>, <2012-09-18>  -- Fixing tests and circular imports 
 v<0.0.1>, <2012-09-17>  -- Initial release
