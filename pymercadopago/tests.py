@@ -47,7 +47,6 @@ class PyMercadopagoTest(unittest.TestCase):
                          'items': {'title': 'Cuadro con Mother',
                                    'quantity': 10, 'unit_price': 50,
                                    'currency_id': 'ARS'}}
-
         preference = MPPreference(result_dummie)
         self.assertFalse(preference == None, "Error creating preference")
 
@@ -60,14 +59,15 @@ class PyMercadopagoTest(unittest.TestCase):
                       collector_id='5879')
         item = MPItem(title='Cuadro con Mother', quantity=100, unit_price=520,
                      currency_id='ARS')
-        item.picture_url = "https://www.mercadopago.com/org-img/MP3/home/ \
-        logomp3.gif"
+        item.picture_url = "http://docs.python.org/_static/py.png"
         item.id = "12345"
-        item.description = "esta es la descripcion que quiero mandar\
-         con el producto"
+        item.description = "descripcion que quiero mandar"
         order.add_item(item)
 
         payer = MPPayer()
+        payer.name = 'Angel'
+        payer.surname = 'Velasquez'
+        payer.email = 'angel@bixti.com'
         order.add_payer(payer)
 
         back_urls = MPBackUrls()
@@ -82,6 +82,7 @@ class PyMercadopagoTest(unittest.TestCase):
                           "Getting MercadoPago results Failed ")
         #Url element will be verified for valid url string
         for preference in mp_handler.result:
+            print preference
             parsed = urlparse(preference.init_point)
             self.assertTrue(parsed.scheme != '' or parsed.netloc != '' or
                              parsed.path != '' or parsed.query != '',
