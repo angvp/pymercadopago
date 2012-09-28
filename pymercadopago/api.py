@@ -3,7 +3,11 @@
 PyMercadopagoHandler Class:
 ==================
 """
-from mpexceptions import NoAccessTokenError, UndefinedResponseError
+"""
+from mpexceptions import NoAccessTokenError, UndefinedResponseError, \
+    EmptyCredentialsError
+"""
+from mpexceptions import *
 
 import requests
 import json
@@ -29,7 +33,7 @@ class Handler:
         self.client_id = client_id
         self.client_secret = client_secret
         if self.client_id == '' or self.client_secret == '':
-            raise NoAccessTokenError()
+            raise EmptyCredentialsError()
 
         self.access_token = self.get_access_token()
 
