@@ -29,8 +29,8 @@ class PyMercadopagoTest(unittest.TestCase):
         except UndefinedResponseError:
             self.fail("Bad response creating token")
 
-        self.assertTrue(len(self.mercadopago_handler.access_token) == 63,
-                        "Invalid token size!!")
+        self.assertTrue(self.mercadopago_handler.access_token.startswith('APP')
+                , "Invalid token size!!")
 
     def test_create_preference(self):
 
@@ -83,7 +83,6 @@ class PyMercadopagoTest(unittest.TestCase):
                           "Getting MercadoPago results Failed ")
         #Url element will be verified for valid url string
         for preference in mp_handler.result:
-            print preference
             parsed = urlparse(preference.init_point)
             self.assertTrue(parsed.scheme != '' or parsed.netloc != '' or
                              parsed.path != '' or parsed.query != '',
