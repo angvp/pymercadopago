@@ -1,7 +1,6 @@
 '''
-Created on Sep 11, 2012
-
-@author: diego
+pymercadopago tests
+@authors: diego, angvp
 '''
 import unittest
 from urlparse import urlparse
@@ -22,14 +21,14 @@ class PyMercadopagoTest(unittest.TestCase):
     def test_access_token(self):
         try:
             self.mercadopago_handler = Handler(self.client_id,
-                                                            self.client_secret)
+                                               self.client_secret)
         except NoAccessTokenError:
             self.fail("No Access Token")
         except UndefinedResponseError:
             self.fail("Bad response creating token")
 
-        self.assertTrue(self.mercadopago_handler.access_token.startswith('APP')
-                , "Invalid token size!!")
+        self.assertTrue(self.mercadopago_handler.access_token.startswith('APP'),
+                        "Invalid token size!!")
 
     def test_create_preference(self):
 
@@ -49,6 +48,15 @@ class PyMercadopagoTest(unittest.TestCase):
                                    'currency_id': 'ARS'}}
         preference = MPPreference(result_dummie)
         self.assertFalse(preference == None, "Error creating preference")
+
+    """
+    # In order to run this method you should provide an appropiate client_id
+    # and client_secret and id_payment that belongs that ML account
+    def test_get_payment(self):
+        mp_handler = Handler(self.client_id, self.client_secret)
+        result = mp_handler.get_payment(<insert_an_id_payment_here>)
+        self.assertFalse(result == False, "Error getting the payment id)
+    """
 
     def test_list_order_creation(self):
         #batchMode
