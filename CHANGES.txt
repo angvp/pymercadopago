@@ -1,3 +1,4 @@
+v<0.0.5>, <2012-10-24> -- My newbie experience packaging python libraries made this release
 v<0.0.4>, <2012-10-24>  -- Addint new method get_payment and decorator / singleton authenticate 
 in order to refresh the tokens 
 v<0.0.3>, <2012-09-27>  -- Adding new exceptions, fixing tests, removing __repr__ on MPOrder and 
