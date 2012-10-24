@@ -7,6 +7,7 @@ from mpexceptions import *
 
 import requests
 import json
+import time
 
 
 class Handler:
@@ -15,23 +16,29 @@ class Handler:
     notifications = list()
     TOKEN_GENERATION_STATUS_EXPECTED = 200
     CREATE_ITEM_STATUS_EXPECTED = 201
+    NOTIFICATION_STATUS_EXPECTED = 200
     result = None
+    authenticated = False
+    access_token = False
 
     def __init__(self, client_id, client_secret):
         self.url_base = 'https://api.mercadolibre.com'
         self.url_oauth_token = "%s/oauth/token" % self.url_base
         self.url_preference = "%s/checkout/preferences?access_token=" \
-        % self.url_base
+            % self.url_base
 
         self.url_status_preference = "%s/checkout/preferences/ping" \
-        % self.url_base
+            % self.url_base
+
+        self.url_payment_info = "%s/collections/notifications" % self.url_base
 
         self.client_id = client_id
         self.client_secret = client_secret
         if self.client_id == '' or self.client_secret == '':
             raise EmptyCredentialsError()
 
-        self.access_token = self.get_access_token()
+        if not self.authenticated:
+            self.get_access_token()
 
         if not self.access_token:
             raise NoAccessTokenError()
@@ -39,39 +46,48 @@ class Handler:
         self.result = list()
 
     def post_data(self, data, rcode, url, utype):
-
         if utype == 'json':
             headers = {'Content-type': 'application/json',
-                    'Accept': 'application/json'}
+                       'Accept': 'application/json'}
             data = json.dumps(data)
         else:
             headers = {'Content-type': 'application/x-www-form-urlencoded',
-                    'Accept': 'application/json'}
+                       'Accept': 'application/json'}
 
-        r = requests.post(url, data=data, headers=headers)
+        if data is not None:
+            r = requests.post(url, data=data, headers=headers)
+        else:
+            r = request.post(url, headers=headers)
         if r.status_code == rcode:
             return r.content
         else:
             raise UndefinedResponseError(r)
 
-        #Raisear error post data
-
     def get_access_token(self):
-        data = {
-                'grant_type': 'client_credentials',
+        data = {'grant_type': 'client_credentials',
                 'client_id': self.client_id,
-                'client_secret': self.client_secret
-                }
+                'client_secret': self.client_secret}
         url = self.url_oauth_token
         response = self.post_data(data, self.TOKEN_GENERATION_STATUS_EXPECTED,
                                   url, 'text')
         if response:
             resp_dict = json.loads(response)
-            return resp_dict['access_token']
-        return False
+            self.access_token = resp_dict['access_token']
+            self.authenticated = True
+            self.authentication_time = time.time()
+            self.authentication_expires = resp_dict['expires_in']
 
+    def authenticate(func):
+        def wrapped(self, data):
+            auth_dif = time.time() - self.authentication_time
+            if not self.authenticated or auth_dif < self.authentication_expires:
+                self.get_access_token()
+            return func(self, data)
+
+        return wrapped
+
+    @authenticate
     def get_or_create_item(self, data):
-
         url = "%s%s" % (self.url_preference, self.access_token)
         preference = self.post_data(data, self.CREATE_ITEM_STATUS_EXPECTED,
                                     url, 'json')
@@ -83,6 +99,15 @@ class Handler:
         for order in orders:
             result = self.get_or_create_item(order.to_dict())
             self.result.append(MPPreference(result))
+
+    @authenticate
+    def get_payment(self, data):
+        url = "%s/%s?access_token=%s" % (self.url_payment_info, data, self.access_token)
+        payment = self.post_data(None, self.NOTIFICATION_STATUS_EXPECTED,
+                                 url, 'json')
+        if payment:
+            return json.loads(payment)
+        return False
 
 
 class MPOrder:
@@ -99,7 +124,6 @@ class MPOrder:
     back_urls = None
 
     def __init__(self, external_reference, internal_id, collector_id):
-
         #At constructor should be all required fields
         self.external_reference = external_reference
         self.collector_id = collector_id
@@ -108,7 +132,7 @@ class MPOrder:
         self.payer = MPPayer()
 
     def add_item(self, item):
-        if self.items == None:
+        if self.items is None:
             self.items = list()
 
         self.items.append(item)
@@ -117,12 +141,12 @@ class MPOrder:
         self.payer = payer
 
     def add_successUrl(self, url):
-        if self.back_urls == None:
+        if self.back_urls is None:
             self.back_urls = MPBackUrls
         self.back_urls.success = url
 
     def add_pending_url(self, url):
-        if self.back_urls == None:
+        if self.back_urls is None:
             self.back_urls = MPBackUrls()
         self.back_urls.pending = url
 
@@ -145,7 +169,7 @@ class MPOrder:
             items.append(item_dict)
         value['items'] = items
 
-        if self.payer != None:
+        if self.payer is not None:
             payer = {}
             if self.payer.name != '':
                 payer['name'] = self.payer.name
@@ -154,7 +178,7 @@ class MPOrder:
             if self.payer.email != '':
                 payer['email'] = self.payer.email
             value['payer'] = payer
-        if self.back_urls != None:
+        if self.back_urls is not None:
             back_urls = {}
             back_urls['success'] = self.back_urls.success
             back_urls['pending'] = self.back_urls.pending
@@ -163,7 +187,6 @@ class MPOrder:
 
 
 class MPItem:
-
     id = ''
     title = ''
     description = ''
@@ -180,14 +203,12 @@ class MPItem:
 
 
 class MPPayer:
-
     name = ''
     surname = ''
     email = ''
 
 
 class MPBackUrls:
-
     pending = ''
     success = ''
 
@@ -222,9 +243,8 @@ class MPPreference:
         self.items = result['items']
 
     def __repr__(self):
-         return "Collector_id: %s Preference_id: %s Init_point: %s" % (
-                str(self.collector_id), self.id, self.init_point
-                )
+        return("Collector_id: %s Preference_id: %s Init_point: %s" %
+                (str(self.collector_id), self.id, self.init_point))
 
 
 class MPPaymentMethods:
@@ -233,7 +253,7 @@ class MPPaymentMethods:
     installments = 0
 
     def __init__(self, excluded_payment_types, excluded_payment_methods,
-        installments):
+                 installments):
         self.excluded_payment_types = excluded_payment_types
         self.excluded_payment_methods = excluded_payment_methods
         self.installments = installments
