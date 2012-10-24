@@ -1,7 +1,6 @@
 import os
 from setuptools import setup
-import pkg_resources  # part of setuptools
-version = pkg_resources.require("pymercadopago")[0].version
+from version import __version__
 
 
 required = [
@@ -16,7 +15,7 @@ description = "A library to interact with the MercadoPago gateway payment"
 
 setup(
     name="pymercadopago",
-    version=__VERSION__,
+    version=__version__,
     author="Angel Velasquez, Diego Ramirez",
     author_email="angel.velasquez@elo7.com, diego.ramirez@elo7.com",
     description=description,
