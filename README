@@ -1,1 +1,5 @@
-This is a first version for the wrapper of the MercadoPago API
+This is a library to interact with the MercadoPago API
+
+Feel free to improve, suggest or give me a mail, is still being development and
+it's been using on production for few time, so it requires more hands working
+on this.
